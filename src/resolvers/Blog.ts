@@ -474,31 +474,4 @@ export class BlogResolver {
 
     return "all good in the hood";
   }
-
-  @Query(returns => [Post])
-  async posts() {
-    const resp = await this.notion.databases.query({
-      database_id: this.db_id,
-    });
-
-    const results = await Promise.all(
-      resp.results.map(async page => {
-        if (isFullPage(page)) {
-          const metadata = await this.createMetadata(page);
-          const blocks = await this.getAllPaginatedBlocks(
-            page.id,
-          );
-          const content = await this.createBlocks(
-            blocks as BlockObjectResponse[],
-          );
-          return {
-            metadata,
-            content,
-          };
-        }
-      }),
-    );
-
-    return results;
-  }
 }
