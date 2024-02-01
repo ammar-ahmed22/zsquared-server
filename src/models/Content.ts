@@ -1,25 +1,28 @@
-import { ObjectType, Field, createUnionType } from "type-graphql";
+import {
+  ObjectType,
+  Field,
+  createUnionType,
+} from "type-graphql";
 import { Metadata } from "./Metadata";
-import { 
-  IRichText, 
-  IAnnotations, 
-  AnnotationsColor, 
+import {
+  IRichText,
+  IAnnotations,
+  AnnotationsColor,
   IImage,
   IListItem,
   IList,
   IBlock,
   IBlockContent,
-  IPost, 
+  IPost,
   IMetadata,
   BlockType,
-  IEquation
+  IEquation,
 } from "@z-squared/types";
 
-
 @ObjectType({
-  description: "Metadata for rich text"
+  description: "Metadata for rich text",
 })
-export class Annotations implements IAnnotations{
+export class Annotations implements IAnnotations {
   @Field()
   public bold: boolean;
 
@@ -39,105 +42,99 @@ export class Annotations implements IAnnotations{
   public color: AnnotationsColor;
 
   @Field(returns => String, { nullable: true })
-  public language?: string
-  
+  public language?: string;
 }
 
 @ObjectType({
-  description: "Rich text object"
+  description: "Rich text object",
 })
-export class RichText implements IRichText{
+export class RichText implements IRichText {
   @Field()
-  public plainText: string
+  public plainText: string;
 
   @Field(returns => Annotations)
-  public annotations: IAnnotations
+  public annotations: IAnnotations;
 
   @Field({ nullable: true })
-  public href?: string
+  public href?: string;
 
   @Field(returns => Boolean, { nullable: true })
-  inlineLatex?: boolean
+  inlineLatex?: boolean;
 }
-
-
-@ObjectType({ 
-  description: "Image object"
-})
-export class Image implements IImage{
-  @Field()
-  public url: string
-
-  @Field(returns => [RichText])
-  public caption: IRichText[]
-}
-
 
 @ObjectType({
-  description: "List item with unlimited depth of children"
+  description: "Image object",
 })
-export class ListItem implements IListItem{
+export class Image implements IImage {
+  @Field()
+  public url: string;
+
   @Field(returns => [RichText])
-  public content: IRichText[]
+  public caption: IRichText[];
+}
+
+@ObjectType({
+  description: "List item with unlimited depth of children",
+})
+export class ListItem implements IListItem {
+  @Field(returns => [RichText])
+  public content: IRichText[];
 
   @Field(returns => [ListItem], { nullable: true })
-  public children?: IListItem[]
+  public children?: IListItem[];
 }
 
 @ObjectType()
-export class List implements IList{
+export class List implements IList {
   @Field(returns => [ListItem])
-  public children: IListItem[]
+  public children: IListItem[];
 }
 
 @ObjectType()
 export class Equation implements IEquation {
   @Field()
-  public expression: string
+  public expression: string;
 }
-
 
 export const BlockContent = createUnionType({
   name: "BlockContent",
   description: "Union type for block content",
   types: () => [Image, List, RichText, Equation] as const,
-  resolveType: (value) => {
-    if ("plainText" in value){
-      return RichText
+  resolveType: value => {
+    if ("plainText" in value) {
+      return RichText;
     }
-    if ("children" in value){
-      return List
+    if ("children" in value) {
+      return List;
     }
-    if ("url" in value){
-      return Image
+    if ("url" in value) {
+      return Image;
     }
 
     if ("expression" in value) {
-      return Equation
+      return Equation;
     }
-    
-    return undefined;
-  }
-})
 
+    return undefined;
+  },
+});
 
 @ObjectType({
-  description: "Block content for posts"
+  description: "Block content for posts",
 })
-export class Block implements IBlock{
+export class Block implements IBlock {
   @Field(returns => String)
   public type: BlockType;
 
   @Field(returns => [BlockContent])
-  public content: IBlockContent[]
+  public content: IBlockContent[];
 }
 
 @ObjectType()
-export class Post implements IPost{
-
+export class Post implements IPost {
   @Field(returns => Metadata)
-  public metadata: IMetadata
+  public metadata: IMetadata;
 
   @Field(returns => [Block])
-  public content: IBlock[]
+  public content: IBlock[];
 }
