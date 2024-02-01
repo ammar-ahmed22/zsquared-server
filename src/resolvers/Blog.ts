@@ -262,7 +262,7 @@ export class BlogResolver {
     }
 
     const hasCategories = !!categories.length;
-    console.log({ hasCategories });
+
     const categoryMap = categories.map(category => ({
       property: "Categories",
       multi_select: {
