@@ -22,7 +22,7 @@
 ### ⚙️ Running locally
 1. **Clone the repository:**
 ```sh
-git clone https://google.ca
+git clone https://github.com/ammar-ahmed22/zsquared-server.git
 ```
 
 2. **Install dependencies:**
@@ -40,6 +40,7 @@ yarn build # npm run build
 yarn start # npm start
 ```
 > To watch for changes and re-run, use `yarn dev`
+
 > To run without building, use `yarn dev:start`
 
 ### 📥 Issues
