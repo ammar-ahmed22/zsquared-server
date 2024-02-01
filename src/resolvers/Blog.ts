@@ -424,7 +424,6 @@ export class BlogResolver {
 
   @Query(returns => [Metadata])
   async searchMetadata(@Arg("query") query: string) {
- 
     const filter = (() => {
       let filter: any = {
         and: [
@@ -435,22 +434,22 @@ export class BlogResolver {
             },
           },
         ],
-      }
+      };
       if (process.env.NODE_ENV === "production") {
         filter.and.push({
           property: "Categories",
           multi_select: {
-            does_not_contain: "Testing"
-          }
+            does_not_contain: "Testing",
+          },
         });
-      };
+      }
 
       return filter;
-    })()
+    })();
 
     const resp = await this.notion.databases.query({
       database_id: this.db_id,
-      filter
+      filter,
     });
 
     const results = resp.results as PageObjectResponse[];
