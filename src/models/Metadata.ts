@@ -3,39 +3,39 @@ import { IMetadata, IRichText } from "@z-squared/types";
 import { RichText } from "./Content";
 
 @ObjectType({
-  description: "Post metadata"
+  description: "Post metadata",
 })
-export class Metadata implements IMetadata{
-  constructor(params?: IMetadata){
+export class Metadata implements IMetadata {
+  constructor(params?: IMetadata) {
     Object.assign(this, params);
   }
   @Field(returns => ID)
-  public id: string
+  public id: string;
 
   @Field()
-  public name: string
+  public name: string;
 
   @Field(returns => [String])
-  public categories: string[]
+  public categories: string[];
 
   @Field()
-  public publishDate: Date
+  public publishDate: Date;
 
   @Field()
-  public publish: boolean
+  public publish: boolean;
 
   @Field(returns => [String])
-  public authors: string[]
+  public authors: string[];
 
   @Field()
-  public slug: string
+  public slug: string;
 
   @Field(returns => [RichText])
-  public description: IRichText[]
+  public description: IRichText[];
 
   @Field({ nullable: true })
-  public image?: string
+  public image?: string;
 
   @Field(returns => Boolean, { nullable: true })
-  public featured?: boolean
+  public featured?: boolean;
 }
