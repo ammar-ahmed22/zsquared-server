@@ -406,14 +406,18 @@ export class BlogResolver {
     const res = await this.notion.databases.retrieve({
       database_id: this.db_id,
     });
-    
+
     if (res.properties.Categories.type === "multi_select") {
-      return res.properties.Categories.multi_select.options.map(
-        option => option.name
-      ).filter(c => {
-        if (process.env.NODE_ENV === "production" && c === "Testing") return false;
-        return true;
-      });
+      return res.properties.Categories.multi_select.options
+        .map(option => option.name)
+        .filter(c => {
+          if (
+            process.env.NODE_ENV === "production" &&
+            c === "Testing"
+          )
+            return false;
+          return true;
+        });
     }
     return [];
   }
