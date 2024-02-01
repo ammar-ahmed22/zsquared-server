@@ -24,7 +24,7 @@ import { Ammar } from "@z-squared/types";
   const server = new ApolloServer({
     schema,
   });
-  console.log(process.env.NODE_ENV);
+  console.log("ENV:", process.env.NODE_ENV);
 
   await server.start();
 

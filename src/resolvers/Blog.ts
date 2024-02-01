@@ -406,13 +406,14 @@ export class BlogResolver {
     const res = await this.notion.databases.retrieve({
       database_id: this.db_id,
     });
-    // TODO: Filter out Testing category in prod
+    
     if (res.properties.Categories.type === "multi_select") {
       return res.properties.Categories.multi_select.options.map(
-        option => {
-          return option.name;
-        },
-      );
+        option => option.name
+      ).filter(c => {
+        if (process.env.NODE_ENV === "production" && c === "Testing") return false;
+        return true;
+      });
     }
     return [];
   }
