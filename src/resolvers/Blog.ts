@@ -186,7 +186,13 @@ export class BlogResolver{
   }
 
   private createFilter = (categories: string[], onlyPublished: boolean, featured: boolean) => {
+     // Only allow for testing posts to be sent in dev environment
+    if (process.env.NODE_ENV === "development") {
+      categories.push("Testing");
+    }
+
     const hasCategories = !!categories.length;
+    console.log({ hasCategories });
     const categoryMap = categories.map( category => ({
       property: "Categories",
       multi_select: {
@@ -215,6 +221,16 @@ export class BlogResolver{
         or: categoryMap
       })
     }
+    
+    // Filter out testing posts in production
+    if (process.env.NODE_ENV === "production") {
+      res.and.push({
+        property: "Categories",
+        multi_select: {
+          does_not_contain: "Testing"
+        }
+      })
+    };
 
     if (featured) {
       res.and.push({
@@ -224,7 +240,7 @@ export class BlogResolver{
         }
       })
     }
-    
+
     return res;
   }
 
@@ -302,7 +318,7 @@ export class BlogResolver{
     const res = await this.notion.databases.retrieve({
       database_id: this.db_id
     });
-    
+    // TODO: Filter out Testing category in prod
     if (res.properties.Categories.type === "multi_select"){
       return res.properties.Categories.multi_select.options.map((option) => {
         return option.name
@@ -315,13 +331,7 @@ export class BlogResolver{
   async searchMetadata(
     @Arg("query") query: string
   ){
-    // const resp = await this.notion.search({
-    //   query,
-    //   filter: {
-    //     value: "page",
-    //     property: "object"
-    //   }
-    // })
+    // TODO: Filter out posts marked with Testing in prod
     const resp = await this.notion.databases.query({
       database_id: this.db_id,
       filter: {
