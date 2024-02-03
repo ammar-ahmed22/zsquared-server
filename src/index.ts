@@ -5,7 +5,7 @@ import express from "express";
 import { buildSchema } from "type-graphql";
 import { BlogResolver } from "./resolvers/Blog";
 import { ApolloServer } from "@apollo/server";
-import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { expressMiddleware } from "@apollo/server/express4";
 import cors from "cors";
 import { logServerStatus } from "./helpers/logs";
@@ -13,7 +13,7 @@ import { logServerStatus } from "./helpers/logs";
 (async () => {
   const ENDPOINT = "/graphql";
   const PORT = parseInt(process.env.PORT) || 8080;
-  const HOST = process.env.HOST || "http://localhost"
+  const HOST = process.env.HOST || "http://localhost";
   const app = express();
   const schema = await buildSchema({
     resolvers: [BlogResolver],
@@ -26,9 +26,7 @@ import { logServerStatus } from "./helpers/logs";
   const server = new ApolloServer({
     schema,
     introspection: true,
-    plugins: [
-      ApolloServerPluginLandingPageLocalDefault()
-    ]
+    plugins: [ApolloServerPluginLandingPageLocalDefault()],
   });
 
   await server.start();
