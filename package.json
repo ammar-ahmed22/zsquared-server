@@ -16,8 +16,12 @@
   "dependencies": {
     "@apollo/server": "^4.4.0",
     "@notionhq/client": "^2.2.3",
+    "@types/chalk": "^2.2.0",
+    "@types/cli-box": "^6.0.4",
     "@z-squared/types": "^1.1.22",
+    "chalk": "4.1.2",
     "class-validator": "^0.14.0",
+    "cli-box": "^6.0.10",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -27,7 +31,7 @@
     "type-graphql": "2.0.0-beta.1"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "build": "tsc",
     "dev": "nodemon --watch './**/*.ts' --exec ts-node ./src/index.ts",
     "update-types": "yarn remove @z-squared/types && yarn add @z-squared/types && yarn install && yarn upgrade",
