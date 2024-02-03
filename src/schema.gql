@@ -3,9 +3,7 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-"""
-Metadata for rich text
-"""
+"""Metadata for rich text"""
 type Annotations {
   bold: Boolean!
   code: Boolean!
@@ -16,26 +14,20 @@ type Annotations {
   underline: Boolean!
 }
 
-"""
-Block content for posts
-"""
+"""Block content for posts"""
 type Block {
   content: [BlockContent!]!
   type: String!
 }
 
-"""
-Union type for block content
-"""
+"""Union type for block content"""
 union BlockContent = Equation | Image | List | RichText
 
 type Equation {
   expression: String!
 }
 
-"""
-Image object
-"""
+"""Image object"""
 type Image {
   caption: [RichText!]!
   url: String!
@@ -45,17 +37,13 @@ type List {
   children: [ListItem!]!
 }
 
-"""
-List item with unlimited depth of children
-"""
+"""List item with unlimited depth of children"""
 type ListItem {
   children: [ListItem!]
   content: [RichText!]!
 }
 
-"""
-Post metadata
-"""
+"""Post metadata"""
 type Metadata {
   authors: [String!]!
   categories: [String!]!
@@ -69,29 +57,16 @@ type Metadata {
   slug: String!
 }
 
-type Post {
-  content: [Block!]!
-  metadata: Metadata!
-}
-
 type Query {
   categories: [String!]!
   content(id: String!): [Block!]!
-  metadata(
-    ascending: Boolean = true
-    categories: [String!] = []
-    featured: Boolean = false
-    onlyPublished: Boolean = false
-  ): [Metadata!]!
+  metadata(ascending: Boolean = true, categories: [String!] = [], featured: Boolean = false, onlyPublished: Boolean = false): [Metadata!]!
   metadataBySlug(slug: String!): Metadata!
-  posts: [Post!]!
   searchMetadata(query: String!): [Metadata!]!
   test: String!
 }
 
-"""
-Rich text object
-"""
+"""Rich text object"""
 type RichText {
   annotations: Annotations!
   href: String

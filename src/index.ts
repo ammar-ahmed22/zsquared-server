@@ -8,6 +8,7 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
 import { expressMiddleware } from "@apollo/server/express4";
 import cors from "cors";
+import { logServerStatus } from "./helpers/logs";
 
 (async () => {
   const ENDPOINT = "/graphql";
@@ -29,7 +30,6 @@ import cors from "cors";
       ApolloServerPluginLandingPageLocalDefault()
     ]
   });
-  console.log("ENV:", process.env.NODE_ENV);
 
   await server.start();
 
@@ -41,8 +41,6 @@ import cors from "cors";
   );
 
   app.listen(PORT, () =>
-    console.log(
-      `🚀 Server ready at ${HOST}:${PORT}${ENDPOINT}`,
-    ),
+    logServerStatus(process.env.NODE_ENV, PORT, ENDPOINT),
   );
 })();
